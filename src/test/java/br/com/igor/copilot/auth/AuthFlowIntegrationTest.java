@@ -6,30 +6,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import br.com.igor.copilot.TestcontainersConfiguration;
 import br.com.igor.copilot.auth.dto.LoginRequest;
 import br.com.igor.copilot.auth.dto.RefreshTokenRequest;
 import br.com.igor.copilot.auth.dto.TokenResponse;
+import br.com.igor.copilot.support.IntegrationTest;
 import br.com.igor.copilot.user.dto.CreateUserRequest;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Locale;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@Import(TestcontainersConfiguration.class)
-@ActiveProfiles("test")
-@TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@IntegrationTest
 class AuthFlowIntegrationTest {
 
     private final MockMvc mockMvc;
