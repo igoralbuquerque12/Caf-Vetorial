@@ -79,3 +79,25 @@ Content-Type: application/json
 {
   "refreshToken": "{{refreshToken}}"
 }
+
+### 11. Upload de documento → 202
+POST {{baseUrl}}/api/v1/documents
+Authorization: Bearer {{accessToken}}
+Content-Type: multipart/form-data; boundary=boundary
+
+--boundary
+Content-Disposition: form-data; name="file"; filename="regulamento.pdf"
+Content-Type: application/pdf
+
+< ./samples/regulamento.pdf
+--boundary--
+
+> {% client.global.set("documentId", response.body.id); %}
+
+### 12. Consultar status de processamento do documento → 200
+GET {{baseUrl}}/api/v1/documents/{{documentId}}
+Authorization: Bearer {{accessToken}}
+
+### 13. Listar todos os documentos do usuário autenticado → 200
+GET {{baseUrl}}/api/v1/documents
+Authorization: Bearer {{accessToken}}
