@@ -1,0 +1,81 @@
+@baseUrl = http://localhost:8080
+
+### 1. Cadastro (201 Created)
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "igor@exemplo.com",
+  "password": "password123"
+}
+
+### 2. Cadastro duplicado com o e-mail em maiúsculas (409 Conflict)
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "IGOR@EXEMPLO.COM",
+  "password": "password123"
+}
+
+### 3. Cadastro inválido (400 Bad Request)
+POST {{baseUrl}}/api/v1/users
+Content-Type: application/json
+
+{
+  "email": "email-invalido",
+  "password": "123"
+}
+
+### 4. Login (200 OK)
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "igor@exemplo.com",
+  "password": "password123"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); client.global.set("refreshToken", response.body.refreshToken); %}
+
+### 5. Login com senha errada (401 Unauthorized)
+POST {{baseUrl}}/api/v1/auth/login
+Content-Type: application/json
+
+{
+  "email": "igor@exemplo.com",
+  "password": "wrongpassword"
+}
+
+### 6. GET /api/v1/users/me com token (200 OK)
+GET {{baseUrl}}/api/v1/users/me
+Authorization: Bearer {{accessToken}}
+
+### 7. GET /api/v1/users/me sem token (401 Unauthorized)
+GET {{baseUrl}}/api/v1/users/me
+
+### 8. Refresh (200 OK)
+POST {{baseUrl}}/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+> {% client.global.set("accessToken", response.body.accessToken); client.global.set("refreshToken", response.body.refreshToken); %}
+
+### 9. Logout (204 No Content)
+POST {{baseUrl}}/api/v1/auth/logout
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
+
+### 10. Refresh com o token que acabou de ser revogado (401 Unauthorized)
+POST {{baseUrl}}/api/v1/auth/refresh
+Content-Type: application/json
+
+{
+  "refreshToken": "{{refreshToken}}"
+}
