@@ -1,9 +1,9 @@
 package br.com.igor.copilot.user;
 
+import br.com.igor.copilot.shared.security.CurrentUser;
 import br.com.igor.copilot.user.dto.CreateUserRequest;
 import br.com.igor.copilot.user.dto.UserResponse;
 import jakarta.validation.Valid;
-import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -35,6 +35,6 @@ public class UserController {
 
     @GetMapping("/me")
     public UserResponse me(@AuthenticationPrincipal Jwt jwt) {
-        return userService.findById(UUID.fromString(jwt.getSubject()));
+        return userService.findById(CurrentUser.id(jwt));
     }
 }
