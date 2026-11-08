@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: ai-copilot
+
+  config:
+    import: optional:file:.env[.properties]
+
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:copilot}
+    username: ${POSTGRES_USER:copilot}
+    password: ${POSTGRES_PASSWORD:copilot}
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_DEFAULT_USER:copilot}
+    password: ${RABBITMQ_DEFAULT_PASS:copilot}
+
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 20MB
+
+  ai:
+    openai:
+      api-key: ${OPENAI_API_KEY}
+      chat:
+        options:
+          model: gpt-5.6-luna
+          temperature: 0.2
+      embedding:
+        options:
+          model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        initialize-schema: false
+        index-type: HNSW
+        distance-type: COSINE_DISTANCE
+        dimensions: 1536
+
+app:
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: ai-copilot
+    access-token-ttl: 15m
+    refresh-token-ttl: 7d
+  aws:
+    region: us-east-1
+    s3-bucket: ${S3_BUCKET:copilot-docs}
+  queues:
+    document-process: document.process.queue
