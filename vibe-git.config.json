@@ -1,0 +1,35 @@
+{
+  "_aiProvider_info": "Options: 'gemini' | 'openai' | 'groq'",
+  "aiProvider": "gemini",
+  "disableWarns": false,
+  "PRs": {
+    "createPRs": true,
+    "useModel": true,
+    "model": "## Descrição\nDescrição da tarefa\n\n## Problemas\n- Relate os problemas que causaram a tarefa\n\n## Solução\n- Descreva as soluções usadas para resolver o problema\n\n## Checklist\n- [x] Eu testei localmente as alterações realizadas.\n- [x] Eu adicionei ou atualizei testes que comprovam a eficácia das mudanças.\n- [x] Todos os testes passaram com sucesso.\n- [ ] Eu atualizei a documentação, se necessário.\n- [x] Certifique-se de que a Pull Request está em branch separado do branch principal.\n\n## Screenshots (se aplicável)\n\n## Link para teste",
+    "idioma": "pt-BR",
+    "prBase": "development"
+  },
+  "commits": {
+    "useConventionalCommits": true,
+    "conventionalCommitTypes": [
+      "feat",
+      "fix",
+      "docs",
+      "style",
+      "refactor",
+      "perf",
+      "test",
+      "chore"
+    ],
+    "idioma": "en"
+  },
+  "llm-gemini-model": {
+    "modelName": "gemini-2.5-flash"
+  },
+  "llm-openai-model": {
+    "modelName": "gpt-5.4-mini"
+  },
+  "llm-groq-model": {
+    "modelName": "llama-3.3-70b-versatile"
+  }
+}
