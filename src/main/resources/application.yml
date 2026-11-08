@@ -20,6 +20,13 @@ spring:
     port: ${RABBITMQ_PORT:5672}
     username: ${RABBITMQ_DEFAULT_USER:copilot}
     password: ${RABBITMQ_DEFAULT_PASS:copilot}
+    listener:
+      simple:
+        acknowledge-mode: auto
+        default-requeue-rejected: false
+        prefetch: 1
+        concurrency: 1
+        max-concurrency: 3
 
   servlet:
     multipart:
@@ -27,6 +34,12 @@ spring:
       max-request-size: 20MB
 
   ai:
+    retry:
+      max-attempts: 3
+      backoff:
+        initial-interval: 2s
+        multiplier: 2
+        max-interval: 10s
     openai:
       api-key: ${OPENAI_API_KEY}
       chat:
@@ -50,7 +63,16 @@ app:
     access-token-ttl: 15m
     refresh-token-ttl: 7d
   aws:
-    region: us-east-1
-    s3-bucket: ${S3_BUCKET:copilot-docs}
-  queues:
-    document-process: document.process.queue
+    region: ${AWS_REGION:us-east-1}
+    s3-bucket: ${S3_BUCKET}
+    s3-endpoint: ${S3_ENDPOINT:}
+  messaging:
+    document:
+      exchange: document.exchange
+      routing-key: document.process
+      queue: document.process.queue
+      dead-letter-exchange: document.dlx
+      dead-letter-queue: document.process.dlq
+  ingestion:
+    chunk-size: 800
+    min-chunk-size-chars: 350
