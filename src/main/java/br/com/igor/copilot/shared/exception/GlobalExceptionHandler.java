@@ -1,6 +1,9 @@
 package br.com.igor.copilot.shared.exception;
 
 import br.com.igor.copilot.auth.InvalidRefreshTokenException;
+import br.com.igor.copilot.document.DocumentNotFoundException;
+import br.com.igor.copilot.document.InvalidDocumentException;
+import br.com.igor.copilot.storage.StorageException;
 import br.com.igor.copilot.user.EmailAlreadyInUseException;
 import br.com.igor.copilot.user.UserNotFoundException;
 import java.util.LinkedHashMap;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 /**
@@ -45,6 +49,20 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, HttpStatus.BAD_REQUEST, request);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMaxUploadSizeExceededException(
+            MaxUploadSizeExceededException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request
+    ) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.PAYLOAD_TOO_LARGE,
+                "Arquivo excede o tamanho máximo de 20MB"
+        );
+        return handleExceptionInternal(ex, problem, headers, HttpStatus.PAYLOAD_TOO_LARGE, request);
+    }
+
     @ExceptionHandler(EmailAlreadyInUseException.class)
     public ProblemDetail handleEmailAlreadyInUse(EmailAlreadyInUseException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
@@ -68,6 +86,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UserNotFoundException.class)
     public ProblemDetail handleUserNotFound(UserNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(InvalidDocumentException.class)
+    public ProblemDetail handleInvalidDocument(InvalidDocumentException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(DocumentNotFoundException.class)
+    public ProblemDetail handleDocumentNotFound(DocumentNotFoundException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(StorageException.class)
+    public ProblemDetail handleStorage(StorageException ex) {
+        log.error("Erro no serviço de armazenamento", ex);
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.SERVICE_UNAVAILABLE,
+                "Serviço de armazenamento indisponível. Tente novamente."
+        );
     }
 
     @ExceptionHandler(Exception.class)
