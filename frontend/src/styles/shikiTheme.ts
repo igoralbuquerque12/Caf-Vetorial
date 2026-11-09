@@ -1,22 +1,20 @@
 import type { ThemeRegistration } from 'shiki'
 
 /**
- * Tema do shiki: fundo navy, texto cream, comentários em cream-muted itálico,
- * palavras-chave em azul, strings em verde, anotações em areia, tipos em azul claro.
- * Nenhum laranja na sintaxe.
+ * Tema escuro minimalista do Shiki alinhado à paleta Slate + Cyan.
  */
 export const copilotTheme: ThemeRegistration = {
   name: 'copilot-metro',
   type: 'dark',
   colors: {
-    'editor.background': '#0D1833',
-    'editor.foreground': '#F3EDE2',
+    'editor.background': '#090f1e',
+    'editor.foreground': '#f1f5f9',
   },
   settings: [
-    { settings: { foreground: '#F3EDE2', background: '#0D1833' } },
+    { settings: { foreground: '#f1f5f9', background: '#090f1e' } },
     {
       scope: ['comment', 'punctuation.definition.comment'],
-      settings: { foreground: '#B8B1A3', fontStyle: 'italic' },
+      settings: { foreground: '#64748b', fontStyle: 'italic' },
     },
     {
       scope: [
@@ -37,11 +35,11 @@ export const copilotTheme: ThemeRegistration = {
         'support.type.property-name.json',
         'support.type.property-name.yaml',
       ],
-      settings: { foreground: '#9DB4E8' },
+      settings: { foreground: '#38bdf8' },
     },
     {
       scope: ['string', 'string.quoted', 'string.template', 'punctuation.definition.string'],
-      settings: { foreground: '#8FBFA0' },
+      settings: { foreground: '#34d399' },
     },
     {
       scope: [
@@ -53,7 +51,7 @@ export const copilotTheme: ThemeRegistration = {
         'entity.name.function.decorator',
         'meta.decorator',
       ],
-      settings: { foreground: '#E3C27A' },
+      settings: { foreground: '#fbbf24' },
     },
     {
       scope: [
@@ -65,15 +63,15 @@ export const copilotTheme: ThemeRegistration = {
         'storage.type.generic',
         'meta.type',
       ],
-      settings: { foreground: '#C9D6F5' },
+      settings: { foreground: '#e2e8f0' },
     },
     {
       scope: ['constant.numeric', 'constant.other', 'support.constant'],
-      settings: { foreground: '#C9D6F5' },
+      settings: { foreground: '#a5b4fc' },
     },
     {
       scope: ['punctuation', 'meta.brace', 'keyword.operator'],
-      settings: { foreground: '#B8B1A3' },
+      settings: { foreground: '#94a3b8' },
     },
   ],
 }
