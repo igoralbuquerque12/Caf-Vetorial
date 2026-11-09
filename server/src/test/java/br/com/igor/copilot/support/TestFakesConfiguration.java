@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
 
 /**
- * Configuração de testes que substitui o armazenamento S3 e o cliente de embeddings da OpenAI por implementações locais.
+ * Configuração de testes que substitui o armazenamento S3, o modelo de embeddings e o modelo de chat da OpenAI
+ * por implementações locais determinísticas.
  */
 @TestConfiguration(proxyBeanMethods = false)
 public class TestFakesConfiguration {
@@ -21,5 +22,11 @@ public class TestFakesConfiguration {
     @Primary
     public EmbeddingModel fakeEmbeddingModel() {
         return new FakeEmbeddingModel();
+    }
+
+    @Bean
+    @Primary
+    public FakeChatModel fakeChatModel() {
+        return new FakeChatModel();
     }
 }

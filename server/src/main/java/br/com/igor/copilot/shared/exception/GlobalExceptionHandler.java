@@ -1,6 +1,7 @@
 package br.com.igor.copilot.shared.exception;
 
 import br.com.igor.copilot.auth.InvalidRefreshTokenException;
+import br.com.igor.copilot.chat.DocumentNotReadyException;
 import br.com.igor.copilot.document.DocumentNotFoundException;
 import br.com.igor.copilot.document.InvalidDocumentException;
 import br.com.igor.copilot.storage.StorageException;
@@ -10,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ai.retry.NonTransientAiException;
+import org.springframework.ai.retry.TransientAiException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -96,6 +99,22 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(DocumentNotFoundException.class)
     public ProblemDetail handleDocumentNotFound(DocumentNotFoundException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
+    }
+
+    @ExceptionHandler(DocumentNotReadyException.class)
+    public ProblemDetail handleDocumentNotReady(DocumentNotReadyException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setProperty("documentStatus", ex.getStatus().name());
+        return problem;
+    }
+
+    @ExceptionHandler({NonTransientAiException.class, TransientAiException.class})
+    public ProblemDetail handleAiException(RuntimeException ex) {
+        log.error("Falha na comunicação com o provedor de IA", ex);
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_GATEWAY,
+                "O serviço de IA não respondeu. Tente novamente em instantes."
+        );
     }
 
     @ExceptionHandler(StorageException.class)

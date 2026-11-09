@@ -7,3 +7,5 @@ app:
     secret: test-secret-key-with-at-least-32-characters
   aws:
     s3-bucket: test-bucket
+  chat:
+    similarity-threshold: 0.0

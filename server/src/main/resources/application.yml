@@ -5,6 +5,11 @@ spring:
   config:
     import: optional:file:.env[.properties]
 
+  http:
+    client:
+      connect-timeout: 5s
+      read-timeout: 60s
+
   datasource:
     url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DB:copilot}
     username: ${POSTGRES_USER:copilot}
@@ -44,7 +49,7 @@ spring:
       api-key: ${OPENAI_API_KEY}
       chat:
         options:
-          model: gpt-5.6-luna
+          model: gpt-4o-mini
           temperature: 0.2
       embedding:
         options:
@@ -57,6 +62,8 @@ spring:
         dimensions: 1536
 
 app:
+  cors:
+    allowed-origins: http://localhost:5173
   jwt:
     secret: ${JWT_SECRET}
     issuer: ai-copilot
@@ -76,3 +83,8 @@ app:
   ingestion:
     chunk-size: 800
     min-chunk-size-chars: 350
+  chat:
+    system-prompt: classpath:prompts/system-prompt.st
+    rag-prompt: classpath:prompts/rag-prompt.st
+    top-k: 5
+    similarity-threshold: 0.3
