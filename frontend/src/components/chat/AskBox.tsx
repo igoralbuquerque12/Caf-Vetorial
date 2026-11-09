@@ -37,7 +37,7 @@ export function AskBox({
       className="flex flex-col gap-2 border-t border-slate-800/80 bg-slate-900/60 p-3.5"
     >
       {disabledReason && <p className="text-xs text-slate-400">{disabledReason}</p>}
-      <div className="flex items-end gap-2.5">
+      <div className="flex items-center gap-2.5">
         <div className="flex-1">
           <label htmlFor="chat-question-input" className="sr-only">
             Pergunta sobre o documento
@@ -59,7 +59,7 @@ export function AskBox({
                 ? 'Escolha um documento vetorizado para perguntar…'
                 : 'Faça uma pergunta sobre o regulamento (Enter envia, Shift+Enter quebra a linha)…'
             }
-            className="w-full resize-none rounded-lg border border-slate-700/80 bg-slate-950 px-3.5 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 disabled:opacity-50 transition-colors"
+            className="block w-full resize-none rounded-lg border border-slate-700/80 bg-slate-950 px-3.5 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 disabled:opacity-50 transition-colors"
           />
         </div>
         <Button type="submit" variant="primary" disabled={disabled || !question.trim() || overLimit}>
