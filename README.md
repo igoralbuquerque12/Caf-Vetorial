@@ -25,32 +25,53 @@ O frontend também tem um Raio-X: para cada requisição, ele mostra o caminho p
 
 ```mermaid
 flowchart LR
-    user([Usuário])
-    web["Frontend<br/>React + Vite"]
+    user([Usuário]) --> web["Frontend<br/>React + Vite"]
+    web --> api
 
     subgraph backend["Backend Spring Boot"]
-        api["API REST<br/>auth, documentos, chat"]
-        worker["Worker<br/>@RabbitListener"]
+        api["API REST"]
+        worker["Worker"]
     end
 
-    s3[("AWS S3<br/>PDFs")]
-    db[("PostgreSQL<br/>+ pgvector")]
-    mq[["RabbitMQ<br/>fila + DLQ"]]
-    ai["OpenAI"]
+    api --> s3[("AWS S3")]
+    api --> db[("PostgreSQL<br/>+ pgvector")]
+    api --> mq[["RabbitMQ<br/>fila + DLQ"]]
+    mq --> worker
+    worker --> s3
+    worker --> db
+    worker --> ai["OpenAI"]
+    api --> ai
+```
 
-    user --> web
-    web -->|"REST + JWT"| api
+O worker roda no mesmo processo da API e consome a fila de forma assíncrona. O fluxo completo, do upload à resposta:
 
-    api -->|"(1) salva o PDF"| s3
-    api -->|"(2) registra como PENDING"| db
-    api -->|"(3) publica o id"| mq
-    mq -->|"(4) entrega a mensagem"| worker
-    worker -->|"(5) baixa o PDF"| s3
-    worker -->|"(6) gera embeddings"| ai
-    worker -->|"(7) grava trechos e vetores"| db
+```mermaid
+sequenceDiagram
+    autonumber
+    actor U as Usuário
+    participant API as API Spring
+    participant S3 as AWS S3
+    participant DB as PostgreSQL + pgvector
+    participant MQ as RabbitMQ
+    participant W as Worker
+    participant AI as OpenAI
 
-    api -.->|"(A) busca trechos do documento"| db
-    api -.->|"(B) gera a resposta"| ai
+    U->>API: envia o PDF
+    API->>S3: salva o arquivo
+    API->>DB: registra como PENDING
+    API->>MQ: publica o id (após o commit)
+    API-->>U: 202 Accepted
+    MQ->>W: entrega a mensagem
+    W->>S3: baixa o PDF
+    W->>AI: gera embeddings dos trechos
+    W->>DB: grava trechos e vetores (COMPLETED)
+
+    Note over U,AI: Com o documento pronto, o chat é liberado
+
+    U->>API: faz uma pergunta
+    API->>DB: busca trechos daquele documento
+    API->>AI: gera a resposta com esses trechos
+    API-->>U: resposta + páginas de origem
 ```
 
 As linhas contínuas mostram a ingestão de um documento, na ordem em que acontece. As tracejadas mostram uma pergunta no chat. O worker roda no mesmo processo da API e consome a fila de forma assíncrona; o frontend acompanha o status do documento até ele ficar pronto.
