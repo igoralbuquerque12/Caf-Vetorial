@@ -101,3 +101,17 @@ Authorization: Bearer {{accessToken}}
 ### 13. Listar todos os documentos do usuário autenticado → 200
 GET {{baseUrl}}/api/v1/documents
 Authorization: Bearer {{accessToken}}
+
+### 14. Chat sobre o documento → 200
+POST {{baseUrl}}/api/v1/chat
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "question": "Quais são as regras para resgate e existe carência?", "documentId": "{{documentId}}" }
+
+### 15. Pergunta fora do documento → deve dizer que o documento não traz a informação
+POST {{baseUrl}}/api/v1/chat
+Authorization: Bearer {{accessToken}}
+Content-Type: application/json
+
+{ "question": "Qual é a previsão da taxa Selic para o ano que vem?", "documentId": "{{documentId}}" }
