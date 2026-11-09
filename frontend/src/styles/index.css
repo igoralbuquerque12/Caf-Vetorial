@@ -5,35 +5,35 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-abyss: #070d1f;
-  --color-navy: #0d1833;
-  --color-navy-raised: #152449;
-  --color-track: #25365f;
-  --color-cream: #f3ede2;
-  --color-cream-muted: #b8b1a3;
-  --color-orange: #ff7a1a;
-  --color-ok: #8fbfa0;
-  --color-fail: #e07a68;
-  --color-busy: #9db4e8;
-  --color-sand: #e3c27a;
+  --color-abyss: #020617;
+  --color-navy: #0f172a;
+  --color-navy-raised: #1e293b;
+  --color-track: #1e293b;
+  --color-cream: #f8fafc;
+  --color-cream-muted: #94a3b8;
+  --color-orange: #f97316;
+  --color-ok: #34d399;
+  --color-fail: #f87171;
+  --color-busy: #22d3ee;
+  --color-sand: #fbbf24;
 
-  --color-lane-seguranca: #3a4f86;
-  --color-lane-web: #2f5f8f;
-  --color-lane-servico: #4a6fa5;
-  --color-lane-dominio: #6c84b8;
-  --color-lane-infra: #8a93a8;
-  --color-lane-externo: #b8b1a3;
+  --color-lane-seguranca: #38bdf8;
+  --color-lane-web: #22d3ee;
+  --color-lane-servico: #60a5fa;
+  --color-lane-dominio: #818cf8;
+  --color-lane-infra: #94a3b8;
+  --color-lane-externo: #cbd5e1;
 
-  --font-sans: 'Overpass', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Overpass', 'Inter', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --text-xs: 0.8rem;
-  --text-sm: 0.8rem;
-  --text-base: 1rem;
-  --text-lg: 1.25rem;
-  --text-xl: 1.5625rem;
-  --text-2xl: 1.953rem;
-  --text-3xl: 2.441rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 0.9375rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 2rem;
 
   --radius-panel: 12px;
   --radius-control: 8px;
@@ -45,21 +45,26 @@
     color: var(--color-cream);
     font-family: var(--font-sans);
     font-size: 16px;
-    line-height: 1.55;
+    line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
+    background-color: var(--color-abyss);
+    color: var(--color-cream);
   }
   h1,
   h2,
   h3,
   h4 {
-    font-weight: 800;
-    line-height: 1.2;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
     margin: 0;
+    color: #ffffff;
   }
   p {
     margin: 0;
@@ -72,11 +77,12 @@
     color: inherit;
   }
   :focus-visible {
-    outline: 2px solid var(--color-cream);
+    outline: 2px solid var(--color-busy);
     outline-offset: 2px;
   }
   ::selection {
-    background: var(--color-track);
+    background: rgba(34, 211, 238, 0.2);
+    color: #ffffff;
   }
   code,
   pre,
@@ -89,18 +95,18 @@
     text-underline-offset: 3px;
   }
   a:hover {
-    text-decoration-color: var(--color-cream);
+    text-decoration-color: var(--color-busy);
   }
-  /* Barras de rolagem discretas */
   * {
     scrollbar-width: thin;
-    scrollbar-color: var(--color-track) transparent;
+    scrollbar-color: #334155 transparent;
   }
 }
 
 @layer components {
   .prose-copilot {
     max-width: 72ch;
+    line-height: 1.65;
   }
   .prose-copilot p + p {
     margin-top: 0.75rem;
@@ -119,34 +125,35 @@
     margin-top: 0.25rem;
   }
   .prose-copilot strong {
-    font-weight: 800;
+    font-weight: 600;
+    color: #f8fafc;
   }
   .prose-copilot code {
-    background: var(--color-navy);
-    border: 1px solid var(--color-track);
-    border-radius: 4px;
-    padding: 0 0.3em;
-    font-size: 0.85em;
+    background: rgba(15, 23, 42, 0.85);
+    border: 1px solid rgba(51, 65, 85, 0.7);
+    border-radius: 5px;
+    padding: 0.1em 0.35em;
+    font-size: 0.84em;
+    color: #e2e8f0;
   }
   .prose-copilot table {
     border-collapse: collapse;
     margin: 0.5rem 0;
-    font-size: 0.9rem;
+    font-size: 0.875rem;
   }
   .prose-copilot th,
   .prose-copilot td {
-    border: 1px solid var(--color-track);
-    padding: 0.25rem 0.6rem;
+    border: 1px solid #1e293b;
+    padding: 0.35rem 0.65rem;
     text-align: left;
   }
 
-  /* Shiki: linhas destacadas ganham fundo elevado e barra lateral creme de 2px */
   .code-block pre {
     margin: 0;
-    padding: 0.75rem 0;
+    padding: 0.85rem 0;
     overflow-x: auto;
-    font-size: 0.8rem;
-    line-height: 1.6;
+    font-size: 0.8125rem;
+    line-height: 1.65;
     background: transparent !important;
   }
   .code-block code {
@@ -162,8 +169,8 @@
     box-sizing: border-box;
   }
   .code-block .line.hl {
-    background: var(--color-navy-raised);
-    border-left-color: var(--color-cream);
+    background: rgba(34, 211, 238, 0.08);
+    border-left-color: var(--color-busy);
   }
 }
 
@@ -178,7 +185,6 @@
   }
 }
 
-/* Anima a barra de progresso e as peças de interface apenas em resposta a ações */
 @keyframes metro-draw {
   from {
     stroke-dashoffset: 320;

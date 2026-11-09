@@ -25,11 +25,11 @@ export function JavaForNest() {
       {/* Navegação lateral: seletor no mobile e lista numerada no desktop */}
       <aside
         aria-label="Lista de aulas de Java"
-        className="flex flex-col gap-3 border-b lg:border-b-0 lg:border-r border-track bg-navy p-4 lg:col-span-4 xl:col-span-3"
+        className="flex flex-col gap-3 border-b lg:border-b-0 lg:border-r border-slate-800/80 bg-slate-900/40 p-4 lg:col-span-4 xl:col-span-3"
       >
         <div>
-          <h1 className="text-lg">Java para quem vem do Nest</h1>
-          <p className="mt-0.5 text-xs text-cream-muted">16 aulas comparando NestJS/TypeScript com Spring Boot</p>
+          <h1 className="text-sm font-semibold text-white">Java para quem vem do Nest</h1>
+          <p className="mt-0.5 text-xs text-slate-400">16 aulas comparando NestJS/TypeScript com Spring Boot</p>
         </div>
 
         <div className="lg:hidden">
@@ -40,7 +40,7 @@ export function JavaForNest() {
             id="lesson-mobile-select"
             value={lesson.id}
             onChange={(e) => selectLesson(e.target.value)}
-            className="w-full rounded-control border border-track bg-abyss px-3 py-2 text-sm text-cream"
+            className="w-full rounded-lg border border-slate-700/80 bg-slate-950 px-3 py-2 text-xs text-slate-200"
           >
             {javaLessons.map((item, idx) => (
               <option key={item.id} value={item.id}>
@@ -50,7 +50,7 @@ export function JavaForNest() {
           </select>
         </div>
 
-        <ol className="hidden lg:flex m-0 flex-col divide-y divide-track overflow-hidden rounded-panel border border-track bg-abyss/50 p-0 list-none">
+        <ol className="hidden lg:flex m-0 flex-col divide-y divide-slate-800/80 overflow-hidden rounded-xl border border-slate-800/90 bg-slate-950/50 p-0 list-none">
           {javaLessons.map((item, idx) => {
             const selected = item.id === lesson.id
             return (
@@ -59,14 +59,16 @@ export function JavaForNest() {
                   type="button"
                   onClick={() => selectLesson(item.id)}
                   aria-pressed={selected}
-                  className={`flex w-full flex-col gap-0.5 px-3.5 py-2.5 text-left cursor-pointer transition-colors ${
-                    selected ? 'bg-navy-raised' : 'hover:bg-navy'
+                  className={`flex w-full flex-col gap-0.5 px-3.5 py-2.5 text-left cursor-pointer transition-all border-l-2 ${
+                    selected
+                      ? 'border-l-cyan-400 bg-slate-800/60'
+                      : 'border-l-transparent hover:bg-slate-900/70'
                   }`}
                 >
-                  <span className="text-sm font-extrabold text-cream">
+                  <span className={`text-xs font-semibold ${selected ? 'text-cyan-400' : 'text-slate-100'}`}>
                     {idx + 1}. {item.title}
                   </span>
-                  <span className="text-xs text-cream-muted">{item.summary}</span>
+                  <span className="text-[11px] text-slate-400 leading-snug">{item.summary}</span>
                 </button>
               </li>
             )
@@ -75,13 +77,13 @@ export function JavaForNest() {
       </aside>
 
       {/* Conteúdo central da aula */}
-      <article className="flex flex-col gap-6 bg-abyss p-4 md:p-6 lg:col-span-8 xl:col-span-9">
-        <header className="rounded-panel border border-track bg-navy p-5">
-          <span className="text-sm font-semibold text-cream-muted">
+      <article className="flex flex-col gap-6 bg-slate-950 p-4 md:p-6 lg:col-span-8 xl:col-span-9 min-w-0">
+        <header className="rounded-xl border border-slate-800/90 bg-slate-900/70 p-5">
+          <span className="inline-block rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2.5 py-0.5 text-xs font-medium text-cyan-300">
             Aula {lessonIndex + 1} de {javaLessons.length}
           </span>
-          <h2 className="mt-1 text-2xl">{lesson.title}</h2>
-          <div className="prose-copilot mt-3 flex flex-col gap-3 text-base text-cream">
+          <h2 className="mt-2.5 text-xl font-semibold text-white">{lesson.title}</h2>
+          <div className="prose-copilot mt-3 flex flex-col gap-3 text-sm text-slate-300">
             {lesson.paragraphs.map((paragraph, i) => (
               <p key={i}>{paragraph}</p>
             ))}
@@ -90,8 +92,8 @@ export function JavaForNest() {
 
         {/* Painel lado a lado: No Nest/TypeScript e No backend do copilot */}
         <section aria-label="Comparação lado a lado" className="grid gap-4 xl:grid-cols-2">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-base">No Nest/TypeScript</h3>
+          <div className="flex flex-col gap-2 min-w-0">
+            <h3 className="text-sm font-semibold text-slate-200">No Nest/TypeScript</h3>
             <CodeBlock
               code={lesson.nest.code}
               language={lesson.nest.language}
@@ -101,8 +103,8 @@ export function JavaForNest() {
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <h3 className="text-base">No backend do copilot</h3>
+          <div className="flex flex-col gap-2 min-w-0">
+            <h3 className="text-sm font-semibold text-slate-200">No backend do copilot</h3>
             <CodeBlock
               code={lesson.java.code}
               language={lesson.java.language}
@@ -115,11 +117,11 @@ export function JavaForNest() {
         {/* Onde aparece no fluxo */}
         <section
           aria-label="Onde aparece no fluxo"
-          className="flex flex-col gap-3 rounded-panel border border-track bg-navy p-5"
+          className="flex flex-col gap-3.5 rounded-xl border border-slate-800/90 bg-slate-900/70 p-5"
         >
           <div>
-            <h3 className="text-lg">Onde aparece no fluxo</h3>
-            <p className="text-sm text-cream-muted">
+            <h3 className="text-base font-semibold text-white">Onde aparece no fluxo</h3>
+            <p className="text-xs text-slate-400 mt-0.5">
               Clique numa estação para abrir o Raio-X exatamente no ponto em que este conceito entra em ação.
             </p>
           </div>
@@ -132,20 +134,20 @@ export function JavaForNest() {
                 <li key={`${link.flowId}-${link.stepId}`}>
                   <Link
                     to={`/raio-x?flow=${encodeURIComponent(link.flowId)}&step=${encodeURIComponent(link.stepId)}`}
-                    className="flex h-full flex-col justify-between gap-2 rounded-panel border border-track bg-navy-raised p-4 hover:bg-track no-underline transition-colors"
+                    className="flex h-full flex-col justify-between gap-2 rounded-xl border border-slate-800 bg-slate-950/60 p-4 hover:border-cyan-400/50 hover:bg-slate-900 no-underline transition-all"
                   >
                     <div>
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-sm font-extrabold text-cream">
+                        <span className="font-mono text-xs font-semibold text-cyan-400">
                           {step ? `${step.className}${step.member ? `.${step.member}` : ''}` : link.stepId}
                         </span>
-                        <Compass className="h-4 w-4 shrink-0 text-busy" />
+                        <Compass className="h-3.5 w-3.5 shrink-0 text-cyan-400" />
                       </div>
-                      <span className="mt-0.5 block text-xs text-cream-muted">
+                      <span className="mt-1 block text-xs font-medium text-slate-200">
                         Fluxo: {flow?.title ?? link.flowId}
                       </span>
                     </div>
-                    <p className="text-sm text-cream-muted">{link.note}</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">{link.note}</p>
                   </Link>
                 </li>
               )

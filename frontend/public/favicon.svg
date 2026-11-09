@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="14" fill="#0f172a" />
+  <rect x="1.5" y="1.5" width="61" height="61" rx="12.5" stroke="#1e293b" stroke-width="3" />
+  <!-- Java-style rising steam waves (Orange) -->
+  <path
+    d="M27 11C27 11 33 15 28 21C23 27 29 31 29 31"
+    stroke="#f97316"
+    stroke-width="3.8"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M37 14C37 14 42 17.5 38 22.5C34 27.5 39 31 39 31"
+    stroke="#fb923c"
+    stroke-width="3.4"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Coffee cup body & handle (Cyan/Blue Java style) -->
+  <path
+    d="M17 35H43V41C43 46.5228 38.5228 51 33 51H27C21.4772 51 17 46.5228 17 41V35Z"
+    fill="#22d3ee"
+    fill-opacity="0.18"
+    stroke="#22d3ee"
+    stroke-width="3.6"
+    stroke-linejoin="round"
+  />
+  <path
+    d="M43 37H46.5C49.5376 37 52 39.4624 52 42.5C52 45.5376 49.5376 48 46.5 48H42"
+    stroke="#38bdf8"
+    stroke-width="3.6"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+  <!-- Saucer -->
+  <path
+    d="M14 55H46"
+    stroke="#38bdf8"
+    stroke-width="3.8"
+    stroke-linecap="round"
+  />
+</svg>

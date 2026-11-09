@@ -23,72 +23,80 @@ function AnnotationChip({ annotation }: { annotation: string }) {
         onFocus={() => setOpen(true)}
         onBlur={() => setOpen(false)}
         aria-expanded={open}
-        className="inline-flex items-center rounded-full border border-track bg-abyss px-3 py-1 text-sm font-semibold text-sand hover:border-cream cursor-pointer"
+        className="inline-flex items-center rounded-full border border-slate-700/80 bg-slate-950 px-3 py-1 font-mono text-xs font-medium text-amber-300 hover:border-amber-400/60 cursor-pointer transition-colors"
       >
         {annotation}
       </button>
       {open && entry && (
         <span
           role="tooltip"
-          className="absolute bottom-full left-0 z-30 mb-2 w-72 rounded-panel border border-track bg-navy-raised p-3 text-left text-sm text-cream shadow-lg"
+          className="pointer-events-none absolute bottom-full left-0 z-30 mb-2 w-72 max-w-[calc(100vw-3rem)] rounded-xl border border-slate-700 bg-slate-900 p-3 text-left text-xs text-slate-100 shadow-2xl"
         >
-          <span className="block font-extrabold text-cream">{entry.term}</span>
-          <span className="mt-1 block text-cream-muted">{entry.short}</span>
-          {entry.nest && <span className="mt-1.5 block text-xs text-busy">No Nest: {entry.nest}</span>}
+          <span className="block font-mono font-semibold text-amber-300">{entry.term}</span>
+          <span className="mt-1 block text-slate-300 leading-relaxed">{entry.short}</span>
+          {entry.nest && <span className="mt-1.5 block text-[11px] text-cyan-400">No Nest: {entry.nest}</span>}
         </span>
       )}
     </span>
   )
 }
 
-export function StationSheet({ step, stepNumber, totalSteps }: { step: FlowStep; stepNumber: number; totalSteps: number }) {
+export function StationSheet({
+  step,
+  stepNumber,
+  totalSteps,
+}: {
+  step: FlowStep
+  stepNumber: number
+  totalSteps: number
+}) {
   const layer = LAYER_META[step.layer]
   const lesson = step.javaLessonId ? javaLessons.find((l) => l.id === step.javaLessonId) : undefined
 
   return (
     <section
       aria-label={`Folha da estação ${step.className}`}
-      className="flex flex-col gap-4 rounded-panel border border-track bg-navy-raised p-5"
+      className="flex flex-col gap-4 rounded-xl border border-slate-800/90 bg-slate-900/70 p-5"
     >
-      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-track pb-3.5">
+      <div className="flex flex-wrap items-start justify-between gap-3 border-b border-slate-800/80 pb-3.5">
         <div>
           <div className="flex flex-wrap items-center gap-2">
-            <span className="text-sm font-semibold text-cream-muted">
+            <span className="text-xs font-medium text-slate-400">
               Estação {stepNumber} de {totalSteps}
             </span>
             <StatusBadge label={layer.label} tone={step.async ? 'busy' : 'muted'} />
             {step.async && <StatusBadge label="Assíncrono (após a fila)" tone="busy" />}
             {step.external && (
-              <span className="inline-flex items-center gap-1.5 rounded-full border border-track bg-navy px-2.5 py-0.5 text-sm text-cream">
-                <ExternalGlyph system={step.external} size={13} />
+              <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-700/80 bg-slate-950/70 px-2.5 py-0.5 text-xs text-slate-200">
+                <ExternalGlyph system={step.external} size={12} />
                 <span>{EXTERNAL_LABELS[step.external]}</span>
               </span>
             )}
           </div>
-          <h3 className="mt-1.5 text-xl">
+          <h3 className="mt-2 font-mono text-lg font-semibold text-white">
             {step.className}
-            {step.member && <span className="font-semibold text-cream-muted">.{step.member}</span>}
+            {step.member && <span className="font-normal text-cyan-400">.{step.member}</span>}
           </h3>
         </div>
         {lesson && (
           <Link
             to={`/java?aula=${encodeURIComponent(lesson.id)}`}
-            className="inline-flex items-center gap-2 rounded-control border border-track bg-navy px-3 py-1.5 text-sm font-semibold text-cream hover:bg-track no-underline"
+            className="inline-flex items-center gap-2 rounded-lg border border-slate-700/80 bg-slate-950/80 px-3 py-1.5 text-xs font-medium text-slate-200 hover:border-cyan-400/50 hover:text-white no-underline transition-colors"
           >
-            <BookOpen className="h-4 w-4 text-busy" />
+            <BookOpen className="h-3.5 w-3.5 text-cyan-400" />
             <span>Aula: {lesson.title}</span>
           </Link>
         )}
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-panel border border-track bg-navy p-4">
-          <h4 className="text-base text-cream">O que acontece nesta estação</h4>
-          <p className="prose-copilot mt-1.5 text-base text-cream-muted">{step.explanation}</p>
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/50 p-4">
+          <h4 className="text-sm font-semibold text-white">O que acontece nesta estação</h4>
+          <p className="prose-copilot mt-1.5 text-sm text-slate-300">{step.explanation}</p>
         </div>
-        <div className="rounded-panel border border-track bg-navy p-4">
-          <h4 className="text-base text-cream">Equivalente no Nest / TypeScript</h4>
-          <p className="prose-copilot mt-1.5 text-base text-cream-muted">{step.nestEquivalent}</p>
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/50 p-4">
+          <h4 className="text-sm font-semibold text-white">Equivalente no Nest / TypeScript</h4>
+          <p className="prose-copilot mt-1.5 text-sm text-slate-300">{step.nestEquivalent}</p>
         </div>
       </div>
 
@@ -96,7 +104,7 @@ export function StationSheet({ step, stepNumber, totalSteps }: { step: FlowStep;
         <div className="flex flex-wrap gap-6">
           {step.annotations && step.annotations.length > 0 && (
             <div>
-              <span className="block text-sm font-semibold text-cream-muted">Anotações (passe o mouse ou clique)</span>
+              <span className="block text-xs font-medium text-slate-400">Anotações (passe o mouse ou clique)</span>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {step.annotations.map((ann) => (
                   <AnnotationChip key={ann} annotation={ann} />
@@ -106,12 +114,12 @@ export function StationSheet({ step, stepNumber, totalSteps }: { step: FlowStep;
           )}
           {step.dependencies && step.dependencies.length > 0 && (
             <div>
-              <span className="block text-sm font-semibold text-cream-muted">Dependências injetadas no construtor</span>
+              <span className="block text-xs font-medium text-slate-400">Dependências injetadas no construtor</span>
               <div className="mt-1.5 flex flex-wrap gap-1.5">
                 {step.dependencies.map((dep) => (
                   <span
                     key={dep}
-                    className="inline-flex items-center rounded-full border border-track bg-navy px-3 py-1 text-sm font-semibold text-cream"
+                    className="inline-flex items-center rounded-full border border-slate-800 bg-slate-950/70 px-3 py-1 font-mono text-xs font-medium text-slate-200"
                   >
                     {dep}
                   </span>

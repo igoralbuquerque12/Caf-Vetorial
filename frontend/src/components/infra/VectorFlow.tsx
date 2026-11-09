@@ -33,10 +33,13 @@ const SAMPLE_METADATA = `{
 
 export function VectorFlow() {
   return (
-    <section aria-label="Vetores pgvector e RAG" className="flex flex-col gap-6 rounded-panel border border-track bg-navy p-5">
+    <section
+      aria-label="Vetores pgvector e RAG"
+      className="flex flex-col gap-6 rounded-xl border border-slate-800/90 bg-slate-900/70 p-5"
+    >
       <div>
-        <h2 className="text-xl">Vetores (pgvector) e busca RAG</h2>
-        <p className="prose-copilot mt-1 text-sm text-cream-muted">
+        <h2 className="text-lg font-semibold text-white">Vetores (pgvector) e busca RAG</h2>
+        <p className="prose-copilot mt-1 text-sm text-slate-400">
           Em vez de um banco vetorial separado, os embeddings moram no próprio PostgreSQL com a extensão{' '}
           <code>vector</code>, ao lado das tabelas <code>users</code> e <code>document_registry</code>.
         </p>
@@ -44,35 +47,35 @@ export function VectorFlow() {
 
       {/* Ilustração: páginas -> chunks -> embeddings -> linhas da vector_store */}
       <div className="grid gap-3 sm:grid-cols-4">
-        <div className="rounded-panel border border-track bg-abyss p-3.5">
-          <span className="text-xs font-semibold text-cream-muted">1. Páginas</span>
-          <p className="mt-1 text-sm font-extrabold text-cream">PagePdfDocumentReader</p>
-          <p className="mt-1 text-xs text-cream-muted">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3.5">
+          <span className="text-xs font-medium text-slate-400">1. Páginas</span>
+          <p className="mt-1 font-mono text-xs font-semibold text-cyan-400">PagePdfDocumentReader</p>
+          <p className="mt-1 text-xs text-slate-400">
             Extrai 1 <code>Document</code> por página com <code>page_number</code> e descarta páginas em branco.
           </p>
         </div>
 
-        <div className="rounded-panel border border-track bg-abyss p-3.5">
-          <span className="text-xs font-semibold text-cream-muted">2. Chunks</span>
-          <p className="mt-1 text-sm font-extrabold text-cream">TokenTextSplitter</p>
-          <p className="mt-1 text-xs text-cream-muted">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3.5">
+          <span className="text-xs font-medium text-slate-400">2. Chunks</span>
+          <p className="mt-1 font-mono text-xs font-semibold text-cyan-400">TokenTextSplitter</p>
+          <p className="mt-1 text-xs text-slate-400">
             Quebra em blocos de ~800 tokens (mínimo de 350 caracteres) e acrescenta <code>document_id</code>,{' '}
             <code>owner_id</code> e <code>chunk_index</code>.
           </p>
         </div>
 
-        <div className="rounded-panel border border-track bg-abyss p-3.5">
-          <span className="text-xs font-semibold text-cream-muted">3. Embeddings</span>
-          <p className="mt-1 text-sm font-extrabold text-cream">text-embedding-3-small</p>
-          <p className="mt-1 text-xs text-cream-muted">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3.5">
+          <span className="text-xs font-medium text-slate-400">3. Embeddings</span>
+          <p className="mt-1 font-mono text-xs font-semibold text-cyan-400">text-embedding-3-small</p>
+          <p className="mt-1 text-xs text-slate-400">
             Cada chunk vira um vetor de <code>1536</code> números de ponto flutuante representando seu sentido.
           </p>
         </div>
 
-        <div className="rounded-panel border border-track bg-abyss p-3.5">
-          <span className="text-xs font-semibold text-cream-muted">4. Persistência</span>
-          <p className="mt-1 text-sm font-extrabold text-cream">Tabela vector_store</p>
-          <p className="mt-1 text-xs text-cream-muted">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/60 p-3.5">
+          <span className="text-xs font-medium text-slate-400">4. Persistência</span>
+          <p className="mt-1 font-mono text-xs font-semibold text-cyan-400">Tabela vector_store</p>
+          <p className="mt-1 text-xs text-slate-400">
             Colunas <code>id</code>, <code>content</code>, <code>metadata (JSONB)</code> e{' '}
             <code>embedding VECTOR(1536)</code>.
           </p>
@@ -80,16 +83,16 @@ export function VectorFlow() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2">
-        <div className="rounded-panel border border-track bg-abyss p-4">
-          <h3 className="text-base">Exemplo do JSON de metadados em cada linha</h3>
-          <pre className="mt-2 overflow-x-auto rounded-control border border-track bg-navy p-3 text-xs text-cream">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/50 p-4">
+          <h3 className="text-sm font-semibold text-white">Exemplo do JSON de metadados em cada linha</h3>
+          <pre className="mt-2 overflow-x-auto rounded-lg border border-slate-800 bg-[#090f1e] p-3 text-xs text-slate-200">
             {SAMPLE_METADATA}
           </pre>
         </div>
 
-        <div className="rounded-panel border border-track bg-abyss p-4">
-          <h3 className="text-base">A busca no chat: filtro, topK e limiar</h3>
-          <p className="prose-copilot mt-1.5 text-sm text-cream-muted">
+        <div className="rounded-xl border border-slate-800/80 bg-slate-950/50 p-4">
+          <h3 className="text-sm font-semibold text-white">A busca no chat: filtro, topK e limiar</h3>
+          <p className="prose-copilot mt-1.5 text-sm text-slate-400">
             Em <code>ChatService.ask</code>, o advisor recebe a expressão{' '}
             <code>document_id == &apos;...&apos; &amp;&amp; owner_id == &apos;...&apos;</code>. O{' '}
             <code>PgVectorStore</code> calcula o embedding da pergunta, filtra pelo JSONB usando o índice{' '}

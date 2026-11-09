@@ -13,7 +13,6 @@ export function Track({
   reducedMotion = false,
 }: {
   segments: TrackSegment[]
-  /** Usado apenas na tela de login/cadastro (a única animação de traçado permitida). */
   animateDraw?: boolean
   reducedMotion?: boolean
 }) {
@@ -27,7 +26,7 @@ export function Track({
           Math.abs(dy) < 2
             ? `M ${seg.x1} ${seg.y1} L ${seg.x2} ${seg.y2}`
             : `M ${seg.x1} ${seg.y1} C ${midX} ${seg.y1}, ${midX} ${seg.y2}, ${seg.x2} ${seg.y2}`
-        const stroke = seg.error ? '#E07A68' : seg.async ? '#9DB4E8' : '#F3EDE2'
+        const stroke = seg.error ? '#f87171' : seg.async ? '#22d3ee' : '#cbd5e1'
         const dash = seg.async ? '6 5' : undefined
         const shouldDraw = animateDraw && !reducedMotion && !seg.async
         return (
@@ -36,8 +35,8 @@ export function Track({
             d={d}
             fill="none"
             stroke={stroke}
-            strokeOpacity={0.78}
-            strokeWidth={2.5}
+            strokeOpacity={0.75}
+            strokeWidth={2.2}
             strokeLinecap="round"
             strokeDasharray={shouldDraw ? 320 : dash}
             strokeDashoffset={shouldDraw ? 0 : undefined}
