@@ -13,17 +13,27 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const VARIANT_CLASSES: Record<ButtonVariant, string> = {
-  primary: 'bg-orange text-abyss font-extrabold hover:brightness-105',
-  secondary: 'bg-navy-raised text-cream border border-track font-semibold hover:bg-track',
-  ghost: 'bg-transparent text-cream-muted border border-transparent hover:text-cream hover:bg-navy-raised',
+  primary:
+    'bg-orange-500 text-white font-semibold hover:bg-orange-600 shadow-md shadow-orange-500/20 border border-orange-400/20',
+  secondary:
+    'bg-slate-800/80 text-slate-200 border border-slate-700/80 font-medium hover:bg-slate-800 hover:border-slate-600 hover:text-white',
+  ghost:
+    'bg-transparent text-slate-400 border border-transparent font-medium hover:text-slate-100 hover:bg-slate-800/60',
 }
 
-export function Button({ variant = 'secondary', size = 'md', className = '', type = 'button', children, ...rest }: ButtonProps) {
-  const sizeClass = size === 'sm' ? 'px-3 py-1.5 text-sm' : 'px-4 py-2 text-base'
+export function Button({
+  variant = 'secondary',
+  size = 'md',
+  className = '',
+  type = 'button',
+  children,
+  ...rest
+}: ButtonProps) {
+  const sizeClass = size === 'sm' ? 'px-3 py-1.5 text-xs' : 'px-4 py-2 text-sm'
   return (
     <button
       type={type}
-      className={`inline-flex items-center justify-center gap-2 rounded-control cursor-pointer select-none transition-colors disabled:opacity-45 disabled:cursor-not-allowed ${sizeClass} ${VARIANT_CLASSES[variant]} ${className}`}
+      className={`inline-flex items-center justify-center gap-2 rounded-lg cursor-pointer select-none transition-all duration-150 disabled:opacity-45 disabled:cursor-not-allowed ${sizeClass} ${VARIANT_CLASSES[variant]} ${className}`}
       {...rest}
     >
       {children}
