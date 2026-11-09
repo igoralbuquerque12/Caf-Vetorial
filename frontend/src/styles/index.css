@@ -1,0 +1,198 @@
+@import '@fontsource/overpass/400.css';
+@import '@fontsource/overpass/600.css';
+@import '@fontsource/overpass/800.css';
+@import '@fontsource/jetbrains-mono/400.css';
+@import 'tailwindcss';
+
+@theme {
+  --color-abyss: #070d1f;
+  --color-navy: #0d1833;
+  --color-navy-raised: #152449;
+  --color-track: #25365f;
+  --color-cream: #f3ede2;
+  --color-cream-muted: #b8b1a3;
+  --color-orange: #ff7a1a;
+  --color-ok: #8fbfa0;
+  --color-fail: #e07a68;
+  --color-busy: #9db4e8;
+  --color-sand: #e3c27a;
+
+  --color-lane-seguranca: #3a4f86;
+  --color-lane-web: #2f5f8f;
+  --color-lane-servico: #4a6fa5;
+  --color-lane-dominio: #6c84b8;
+  --color-lane-infra: #8a93a8;
+  --color-lane-externo: #b8b1a3;
+
+  --font-sans: 'Overpass', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --text-xs: 0.8rem;
+  --text-sm: 0.8rem;
+  --text-base: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5625rem;
+  --text-2xl: 1.953rem;
+  --text-3xl: 2.441rem;
+
+  --radius-panel: 12px;
+  --radius-control: 8px;
+}
+
+@layer base {
+  html {
+    background: var(--color-abyss);
+    color: var(--color-cream);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+  }
+  p {
+    margin: 0;
+  }
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-cream);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: var(--color-track);
+  }
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-mono);
+  }
+  a {
+    color: var(--color-cream);
+    text-decoration-color: var(--color-track);
+    text-underline-offset: 3px;
+  }
+  a:hover {
+    text-decoration-color: var(--color-cream);
+  }
+  /* Barras de rolagem discretas */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-track) transparent;
+  }
+}
+
+@layer components {
+  .prose-copilot {
+    max-width: 72ch;
+  }
+  .prose-copilot p + p {
+    margin-top: 0.75rem;
+  }
+  .prose-copilot ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .prose-copilot ol {
+    list-style: decimal;
+    padding-left: 1.25rem;
+    margin: 0.5rem 0;
+  }
+  .prose-copilot li + li {
+    margin-top: 0.25rem;
+  }
+  .prose-copilot strong {
+    font-weight: 800;
+  }
+  .prose-copilot code {
+    background: var(--color-navy);
+    border: 1px solid var(--color-track);
+    border-radius: 4px;
+    padding: 0 0.3em;
+    font-size: 0.85em;
+  }
+  .prose-copilot table {
+    border-collapse: collapse;
+    margin: 0.5rem 0;
+    font-size: 0.9rem;
+  }
+  .prose-copilot th,
+  .prose-copilot td {
+    border: 1px solid var(--color-track);
+    padding: 0.25rem 0.6rem;
+    text-align: left;
+  }
+
+  /* Shiki: linhas destacadas ganham fundo elevado e barra lateral creme de 2px */
+  .code-block pre {
+    margin: 0;
+    padding: 0.75rem 0;
+    overflow-x: auto;
+    font-size: 0.8rem;
+    line-height: 1.6;
+    background: transparent !important;
+  }
+  .code-block code {
+    display: block;
+    width: max-content;
+    min-width: 100%;
+  }
+  .code-block .line {
+    display: inline-block;
+    width: 100%;
+    padding: 0 1rem 0 0.875rem;
+    border-left: 2px solid transparent;
+    box-sizing: border-box;
+  }
+  .code-block .line.hl {
+    background: var(--color-navy-raised);
+    border-left-color: var(--color-cream);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Anima a barra de progresso e as peças de interface apenas em resposta a ações */
+@keyframes metro-draw {
+  from {
+    stroke-dashoffset: 320;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.sr-only-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
