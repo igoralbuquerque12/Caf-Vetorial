@@ -21,9 +21,9 @@ export interface MetroMapProps {
   selectedIndex?: number
   onSelectIndex?: (index: number) => void
   onEnterStation?: (step: FlowStep, index: number) => void
-  /** Modo compacto: usado no login/cadastro e na coluna lateral do Workspace. */
+  /** Modo compacto: usado na coluna lateral do Workspace. */
   compact?: boolean
-  /** Anima o traçado do trilho uma vez ao montar (exclusivo do login/cadastro). */
+  /** Anima o traçado do trilho uma vez ao montar. */
   animateDraw?: boolean
   showControls?: boolean
 }
@@ -88,11 +88,12 @@ export function MetroMap({
   }, [playing, activeIndex, steps.length, speed, setIndex, setPlaying])
 
   const isErrorVariant = variant.status >= 400
-  const laneSpacing = compact ? 38 : 48
-  const colSpacing = compact ? 132 : 162
-  const leftPad = compact ? 130 : 175
-  const topPad = 28
-  const rightPad = isErrorVariant ? 115 : 65
+  const laneSpacing = compact ? 44 : 56
+  const colSpacing = compact ? 152 : 186
+  const laneBadgeWidth = compact ? 96 : 114
+  const leftPad = compact ? 185 : 225
+  const topPad = compact ? 38 : 44
+  const rightPad = isErrorVariant ? 145 : 115
 
   const points = useMemo(() => {
     return steps.map((step, i) => {
@@ -123,8 +124,8 @@ export function MetroMap({
     return list
   }, [points, isErrorVariant])
 
-  const svgWidth = Math.max(520, leftPad + Math.max(0, steps.length - 1) * colSpacing + rightPad)
-  const svgHeight = topPad * 2 + (LANE_ORDER.length - 1) * laneSpacing + (compact ? 24 : 36)
+  const svgWidth = Math.max(560, leftPad + Math.max(0, steps.length - 1) * colSpacing + rightPad)
+  const svgHeight = topPad * 2 + (LANE_ORDER.length - 1) * laneSpacing + (compact ? 24 : 38)
   const currentPoint = points[activeIndex] ?? points[0]
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -143,11 +144,11 @@ export function MetroMap({
 
   return (
     <div
-      className="flex flex-col gap-3 rounded-panel border border-track bg-navy p-4"
+      className="flex flex-col gap-3.5 rounded-xl border border-slate-800/90 bg-slate-900/70 p-4"
       onKeyDown={handleKeyDown}
     >
       {showControls && (
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-track pb-3">
+        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 pb-3">
           <div className="flex flex-wrap items-center gap-2">
             <Button
               variant="secondary"
@@ -156,10 +157,9 @@ export function MetroMap({
               disabled={activeIndex <= 0}
               aria-label="Estação anterior"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft className="h-3.5 w-3.5" />
               <span>Anterior</span>
             </Button>
-            {/* O botão de reproduzir NÃO é laranja (regra da seção 6.4). */}
             <Button
               variant="secondary"
               size="sm"
@@ -171,7 +171,7 @@ export function MetroMap({
                 }
               }}
             >
-              {playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+              {playing ? <Pause className="h-3.5 w-3.5" /> : <Play className="h-3.5 w-3.5" />}
               <span>{playing ? 'Pausar' : 'Reproduzir'}</span>
             </Button>
             <Button
@@ -182,19 +182,19 @@ export function MetroMap({
               aria-label="Próxima estação"
             >
               <span>Próximo</span>
-              <ChevronRight className="h-4 w-4" />
+              <ChevronRight className="h-3.5 w-3.5" />
             </Button>
           </div>
 
-          <div className="flex items-center gap-2 text-sm text-cream-muted">
-            <label htmlFor={`speed-${flow.id}`} className="font-semibold">
+          <div className="flex items-center gap-2 text-xs text-slate-400">
+            <label htmlFor={`speed-${flow.id}`} className="font-medium">
               Velocidade
             </label>
             <select
               id={`speed-${flow.id}`}
               value={speed}
               onChange={(e) => setSpeed(Number(e.target.value) as 0.75 | 1 | 1.75)}
-              className="rounded-control border border-track bg-abyss px-2.5 py-1 text-sm text-cream"
+              className="rounded-lg border border-slate-700/80 bg-slate-950 px-2.5 py-1 text-xs text-slate-200"
             >
               <option value={0.75}>0,75x</option>
               <option value={1}>1x</option>
@@ -205,7 +205,7 @@ export function MetroMap({
       )}
 
       {/* Mapa horizontal para desktop */}
-      <div className="hidden md:block overflow-x-auto">
+      <div className="hidden md:block overflow-x-auto rounded-lg bg-slate-950/50 border border-slate-800/60 p-2">
         <svg
           width={svgWidth}
           height={svgHeight}
@@ -221,33 +221,34 @@ export function MetroMap({
             return (
               <g key={layer}>
                 <line
-                  x1={leftPad - 18}
+                  x1={laneBadgeWidth + 20}
                   y1={y}
                   x2={svgWidth - 20}
                   y2={y}
                   stroke={meta.color}
-                  strokeOpacity={0.35}
-                  strokeWidth={1.5}
+                  strokeOpacity={0.22}
+                  strokeWidth={1.25}
                 />
                 <rect
                   x={8}
                   y={y - 11}
-                  width={leftPad - 32}
+                  width={laneBadgeWidth}
                   height={22}
                   rx={6}
                   fill={meta.color}
-                  fillOpacity={0.18}
+                  fillOpacity={0.12}
                   stroke={meta.color}
-                  strokeOpacity={0.55}
+                  strokeOpacity={0.45}
                 />
                 <text
-                  x={16}
-                  y={y + 4}
-                  fill="#F3EDE2"
-                  fontSize={compact ? 10.5 : 11.5}
+                  x={8 + laneBadgeWidth / 2}
+                  y={y + 3.5}
+                  textAnchor="middle"
+                  fill="#e2e8f0"
+                  fontSize={compact ? 10 : 10.5}
                   fontWeight={600}
                 >
-                  {meta.label}
+                  {meta.shortLabel}
                 </text>
               </g>
             )
@@ -261,6 +262,10 @@ export function MetroMap({
             const selected = i === activeIndex
             const layerColor = LAYER_META[effectiveLayer(pt.step)].color
             const labelAbove = i % 2 === 0
+            const hasMember = !compact && Boolean(pt.step.member)
+            const classLabelY = labelAbove ? (hasMember ? pt.y - 25 : pt.y - 16) : pt.y + 22
+            const memberLabelY = labelAbove ? pt.y - 13 : pt.y + 34
+
             return (
               <g
                 key={pt.step.id}
@@ -280,34 +285,42 @@ export function MetroMap({
                 <circle
                   cx={pt.x}
                   cy={pt.y}
-                  r={selected ? 10 : 7.5}
-                  fill="#0D1833"
-                  stroke={pt.isErrorNode ? '#E07A68' : selected ? '#F3EDE2' : layerColor}
-                  strokeWidth={selected ? 2.6 : 2}
+                  r={selected ? 9.5 : 7}
+                  fill="#0f172a"
+                  stroke={pt.isErrorNode ? '#f87171' : selected ? '#22d3ee' : layerColor}
+                  strokeWidth={selected ? 2.5 : 2}
                 />
                 <circle
                   cx={pt.x}
                   cy={pt.y}
-                  r={3}
-                  fill={pt.isErrorNode ? '#E07A68' : selected ? '#F3EDE2' : '#B8B1A3'}
+                  r={2.8}
+                  fill={pt.isErrorNode ? '#f87171' : selected ? '#22d3ee' : '#94a3b8'}
                 />
                 <text
                   x={pt.x}
-                  y={labelAbove ? pt.y - 14 : pt.y + 22}
+                  y={classLabelY}
                   textAnchor="middle"
-                  fill="#F3EDE2"
-                  fontSize={compact ? 10.5 : 11.5}
-                  fontWeight={selected ? 800 : 600}
+                  fill={selected ? '#22d3ee' : '#f1f5f9'}
+                  fontSize={compact ? 10.5 : 11}
+                  fontWeight={selected ? 700 : 600}
+                  paintOrder="stroke"
+                  stroke="#020617"
+                  strokeWidth={4}
+                  strokeLinejoin="round"
                 >
                   {pt.step.className}
                 </text>
-                {!compact && pt.step.member && (
+                {hasMember && (
                   <text
                     x={pt.x}
-                    y={labelAbove ? pt.y - 3 : pt.y + 34}
+                    y={memberLabelY}
                     textAnchor="middle"
-                    fill="#B8B1A3"
-                    fontSize={10.5}
+                    fill="#94a3b8"
+                    fontSize={10}
+                    paintOrder="stroke"
+                    stroke="#020617"
+                    strokeWidth={3.5}
+                    strokeLinejoin="round"
                   >
                     .{pt.step.member}
                   </text>
@@ -318,28 +331,22 @@ export function MetroMap({
 
           {/* Marcador terminal de status HTTP nas variantes de erro */}
           {isErrorVariant && currentPoint && points.length > 0 && (
-            <g transform={`translate(${points[points.length - 1].x + 54}, ${points[points.length - 1].y})`}>
-              <line x1={-44} y1={0} x2={-16} y2={0} stroke="#E07A68" strokeWidth={2.2} />
-              <rect x={-16} y={-12} width={48} height={24} rx={12} fill="#152449" stroke="#E07A68" strokeWidth={1.6} />
-              <text x={8} y={4} textAnchor="middle" fill="#E07A68" fontSize={12} fontWeight={800}>
+            <g transform={`translate(${points[points.length - 1].x + 58}, ${points[points.length - 1].y})`}>
+              <line x1={-48} y1={0} x2={-16} y2={0} stroke="#f87171" strokeWidth={2} />
+              <rect x={-16} y={-12} width={48} height={24} rx={12} fill="#1e293b" stroke="#f87171" strokeWidth={1.5} />
+              <text x={8} y={4} textAnchor="middle" fill="#f87171" fontSize={11.5} fontWeight={700}>
                 {variant.status}
               </text>
             </g>
           )}
 
           {/* Ponto laranja da requisição */}
-          {currentPoint && (
-            <RequestToken x={currentPoint.x} y={currentPoint.y} reducedMotion={reducedMotion} />
-          )}
+          {currentPoint && <RequestToken x={currentPoint.x} y={currentPoint.y} reducedMotion={reducedMotion} />}
         </svg>
       </div>
 
       {/* Lista de estações navegável por teclado */}
-      <div
-        role="toolbar"
-        aria-label="Estações do fluxo"
-        className="flex flex-col gap-2 md:flex-row md:flex-wrap"
-      >
+      <div role="toolbar" aria-label="Estações do fluxo" className="flex flex-col gap-1.5 md:flex-row md:flex-wrap">
         {steps.map((step, i) => (
           <Station
             key={step.id}
@@ -356,33 +363,33 @@ export function MetroMap({
           />
         ))}
         {isErrorVariant && (
-          <span className="inline-flex items-center self-start rounded-full border border-fail bg-fail/10 px-3 py-1 text-sm font-extrabold text-fail">
+          <span className="inline-flex items-center self-start rounded-full border border-red-500/40 bg-red-500/10 px-3 py-1 text-xs font-semibold text-red-300">
             HTTP {variant.status}
           </span>
         )}
       </div>
 
-      {/* Legenda fixa obrigatória (seção 6.4) */}
+      {/* Legenda fixa */}
       <div
         ref={sheetAnchorRef}
-        className="flex flex-wrap items-center justify-between gap-3 border-t border-track pt-2.5 text-xs text-cream-muted"
+        className="flex flex-wrap items-center justify-between gap-3 border-t border-slate-800/80 pt-2.5 text-xs text-slate-400"
       >
         <p>Observado: status HTTP e tempo de resposta. Ilustrado: o caminho interno, conforme o código do backend.</p>
         <div className="flex flex-wrap items-center gap-4">
           <span className="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" className="inline-block h-0.5 w-5 bg-cream" />
+            <span aria-hidden="true" className="inline-block h-0.5 w-4 bg-slate-200" />
             <span>Trecho síncrono</span>
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" className="inline-block h-0.5 w-5 border-b-2 border-dashed border-busy" />
+            <span aria-hidden="true" className="inline-block h-0.5 w-4 border-b-2 border-dashed border-cyan-400" />
             <span>Continuação assíncrona</span>
           </span>
           <span className="inline-flex items-center gap-1.5">
-            <span aria-hidden="true" className="inline-block h-2.5 w-2.5 rounded-full bg-orange" />
+            <span aria-hidden="true" className="inline-block h-2 w-2 rounded-full bg-orange-500" />
             <span>Requisição</span>
           </span>
           {!compact && (
-            <span className="inline-flex items-center gap-2">
+            <span className="inline-flex items-center gap-2.5">
               {(['postgres', 's3', 'rabbitmq', 'openai'] as const).map((sys) => (
                 <span key={sys} className="inline-flex items-center gap-1">
                   <ExternalGlyph system={sys} size={11} />
