@@ -1,36 +1,64 @@
-HELP.md
+# ========================
+# Environment variables
+# ========================
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# ========================
+# Java / Maven (Backend)
+# ========================
 target/
-.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+.mvn/wrapper/maven-wrapper.jar
+HELP.md
+*.log
 
-### STS ###
+# ========================
+# Node / Vite (Frontend)
+# ========================
+node_modules/
+dist/
+dist-ssr/
+coverage/
+.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ========================
+# IDEs & Editors
+# ========================
+.idea/
+*.iws
+*.iml
+*.ipr
+.vscode/
 .apt_generated
 .classpath
 .factorypath
 .project
-.settings
+.settings/
 .springBeans
 .sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
 /nbproject/private/
 /nbbuild/
-/dist/
 /nbdist/
 /.nb-gradle/
 build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### VS Code ###
-.vscode/
-
-.env
+# ========================
+# OS & Tooling
+# ========================
+.DS_Store
+Thumbs.db
 vibe-git/
+
+docker-compose.prod.yml
+frontend/
