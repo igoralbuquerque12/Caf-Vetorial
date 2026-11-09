@@ -34,12 +34,10 @@ export function AskBox({
         e.preventDefault()
         void submit()
       }}
-      className="flex flex-col gap-2 border-t border-track bg-navy p-3.5"
+      className="flex flex-col gap-2 border-t border-slate-800/80 bg-slate-900/60 p-3.5"
     >
-      {disabledReason && (
-        <p className="text-xs text-cream-muted">{disabledReason}</p>
-      )}
-      <div className="flex items-end gap-2">
+      {disabledReason && <p className="text-xs text-slate-400">{disabledReason}</p>}
+      <div className="flex items-end gap-2.5">
         <div className="flex-1">
           <label htmlFor="chat-question-input" className="sr-only">
             Pergunta sobre o documento
@@ -61,27 +59,22 @@ export function AskBox({
                 ? 'Escolha um documento vetorizado para perguntar…'
                 : 'Faça uma pergunta sobre o regulamento (Enter envia, Shift+Enter quebra a linha)…'
             }
-            className="w-full resize-none rounded-control border border-track bg-abyss px-3 py-2 text-base text-cream placeholder:text-cream-muted/60 disabled:opacity-50"
+            className="w-full resize-none rounded-lg border border-slate-700/80 bg-slate-950 px-3.5 py-2.5 text-sm text-slate-200 placeholder:text-slate-500 focus:border-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-400 disabled:opacity-50 transition-colors"
           />
         </div>
-        {/* Único botão laranja da região do chat (seção 6.2). */}
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={disabled || !question.trim() || overLimit}
-        >
-          <Send className="h-4 w-4" />
+        <Button type="submit" variant="primary" disabled={disabled || !question.trim() || overLimit}>
+          <Send className="h-3.5 w-3.5" />
           <span>{busy ? 'Consultando…' : 'Perguntar'}</span>
         </Button>
       </div>
-      <div className="flex items-center justify-between text-xs text-cream-muted">
+      <div className="flex items-center justify-between text-[11px] text-slate-400">
         <span>Enter envia, Shift+Enter quebra a linha</span>
-        <span className={overLimit ? 'font-extrabold text-fail' : ''}>
+        <span className={overLimit ? 'font-semibold text-red-400' : ''}>
           {question.length}/{MAX_QUESTION_LENGTH}
         </span>
       </div>
       {fieldError && (
-        <p role="alert" className="text-xs text-fail">
+        <p role="alert" className="text-xs text-red-400">
           {fieldError}
         </p>
       )}

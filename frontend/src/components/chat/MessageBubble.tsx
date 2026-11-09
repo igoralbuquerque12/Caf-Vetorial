@@ -30,8 +30,8 @@ export function MessageBubble({
 }) {
   if (message.role === 'user') {
     return (
-      <div className="self-end max-w-xl rounded-panel border border-track bg-navy-raised px-4 py-3 text-cream">
-        <p className="prose-copilot whitespace-pre-wrap text-base">{message.text}</p>
+      <div className="self-end max-w-xl rounded-2xl rounded-tr-sm border border-cyan-400/30 bg-cyan-400/10 px-4 py-3 text-slate-100">
+        <p className="prose-copilot whitespace-pre-wrap text-sm">{message.text}</p>
       </div>
     )
   }
@@ -40,22 +40,18 @@ export function MessageBubble({
     return (
       <div
         role="alert"
-        className="flex flex-col gap-2 rounded-panel border border-fail/50 bg-fail/10 p-4 text-sm text-cream"
+        className="flex flex-col gap-2.5 rounded-xl border border-red-500/40 bg-red-500/10 p-4 text-xs text-slate-100"
       >
         <div className="flex flex-wrap items-center gap-2">
-          {message.httpStatus != null && (
-            <StatusBadge label={`HTTP ${message.httpStatus}`} tone="fail" />
-          )}
-          {message.documentStatus && (
-            <StatusBadge label={`documentStatus: ${message.documentStatus}`} tone="busy" />
-          )}
-          <span className="font-extrabold text-fail">Não foi possível responder à pergunta</span>
+          {message.httpStatus != null && <StatusBadge label={`HTTP ${message.httpStatus}`} tone="fail" />}
+          {message.documentStatus && <StatusBadge label={`documentStatus: ${message.documentStatus}`} tone="busy" />}
+          <span className="font-semibold text-red-300">Não foi possível responder à pergunta</span>
         </div>
-        <p className="prose-copilot text-cream">{message.text}</p>
+        <p className="prose-copilot text-slate-200">{message.text}</p>
         {message.inspectorRecordId && (
           <div>
             <Button variant="secondary" size="sm" onClick={() => onOpenXRay(message.inspectorRecordId)}>
-              <Compass className="h-4 w-4" />
+              <Compass className="h-3.5 w-3.5" />
               <span>Ver o caminho desta resposta</span>
             </Button>
           </div>
@@ -65,20 +61,20 @@ export function MessageBubble({
   }
 
   return (
-    <article className="flex flex-col gap-3 rounded-panel border border-track bg-navy-raised p-4">
-      <div className="prose-copilot text-base text-cream">
+    <article className="flex flex-col gap-3 rounded-xl border border-slate-800/90 bg-slate-900/70 p-4">
+      <div className="prose-copilot text-sm text-slate-100">
         <ReactMarkdown remarkPlugins={[remarkGfm]}>{message.text}</ReactMarkdown>
       </div>
 
       {message.sources && message.sources.length > 0 && <SourceList sources={message.sources} />}
 
-      <div className="flex flex-wrap items-center gap-2 border-t border-track pt-3">
+      <div className="flex flex-wrap items-center gap-2 border-t border-slate-800/80 pt-3">
         <Button variant="secondary" size="sm" onClick={() => onOpenXRay(message.inspectorRecordId)}>
-          <Compass className="h-4 w-4" />
+          <Compass className="h-3.5 w-3.5 text-cyan-400" />
           <span>Ver o caminho desta resposta</span>
         </Button>
         <Button variant="secondary" size="sm" onClick={() => onOpenPrompt(message)}>
-          <FileCode className="h-4 w-4" />
+          <FileCode className="h-3.5 w-3.5 text-cyan-400" />
           <span>Ver o prompt montado</span>
         </Button>
       </div>
