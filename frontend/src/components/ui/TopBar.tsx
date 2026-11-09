@@ -32,9 +32,14 @@ export function TopBar() {
 
   return (
     <>
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-track bg-navy px-4 py-2.5">
-        <div className="flex flex-wrap items-center gap-4">
-          <span className="text-base font-extrabold text-cream">Copilot de Previdência</span>
+      <header className="sticky top-0 z-30 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800/80 bg-slate-950/85 backdrop-blur-md px-4 lg:px-6 py-2.5">
+        <div className="flex flex-wrap items-center gap-4 lg:gap-6">
+          <span className="flex items-center gap-2 text-base font-bold tracking-tight text-white">
+            <img src="/favicon.svg" alt="" aria-hidden="true" className="h-6 w-6 rounded-md" />
+            <span>
+              Java<span className="text-cyan-400">Prev</span>
+            </span>
+          </span>
           <nav aria-label="Navegação principal" className="flex flex-wrap items-center gap-1">
             {NAV_ITEMS.map((item) => (
               <NavLink
@@ -42,10 +47,10 @@ export function TopBar() {
                 to={item.to}
                 end={item.end}
                 className={({ isActive }) =>
-                  `rounded-control px-3 py-1.5 text-sm font-semibold no-underline transition-colors ${
+                  `rounded-lg px-3 py-1.5 text-xs font-medium no-underline transition-all ${
                     isActive
-                      ? 'bg-navy-raised text-cream border border-track'
-                      : 'text-cream-muted hover:text-cream hover:bg-navy-raised border border-transparent'
+                      ? 'bg-slate-800/90 text-cyan-400 border border-slate-700/80 shadow-xs'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/70 border border-transparent'
                   }`
                 }
               >
@@ -57,18 +62,21 @@ export function TopBar() {
 
         <div className="flex flex-wrap items-center gap-2.5">
           <Button variant="ghost" size="sm" onClick={() => setDemoOpen(true)}>
-            <ListChecks className="h-4 w-4 text-busy" />
+            <ListChecks className="h-3.5 w-3.5 text-cyan-400" />
             <span>
               Roteiro ({done.length}/{DEMO_STEPS.length})
             </span>
           </Button>
           {user && (
-            <span className="text-sm text-cream-muted" title="Usuário autenticado via /api/v1/users/me">
+            <span
+              className="rounded-full border border-slate-800 bg-slate-900/70 px-3 py-1 text-xs text-slate-400"
+              title="Usuário autenticado via /api/v1/users/me"
+            >
               {user.email}
             </span>
           )}
           <Button variant="secondary" size="sm" onClick={() => void handleSignOut()}>
-            <LogOut className="h-4 w-4" />
+            <LogOut className="h-3.5 w-3.5" />
             <span>Sair</span>
           </Button>
         </div>
@@ -76,22 +84,22 @@ export function TopBar() {
 
       <Drawer open={demoOpen} title="Roteiro de demonstração" onClose={() => setDemoOpen(false)}>
         <div className="flex flex-col gap-5">
-          <p className="prose-copilot text-sm text-cream-muted">
+          <p className="prose-copilot text-sm text-slate-400">
             Os itens abaixo se marcam sozinhos conforme você usa o produto. O progresso fica salvo no{' '}
             <code>localStorage</code>.
           </p>
 
-          <ol className="m-0 flex flex-col divide-y divide-track rounded-panel border border-track bg-abyss p-0 list-none">
+          <ol className="m-0 flex flex-col divide-y divide-slate-800/80 rounded-xl border border-slate-800 bg-slate-950/60 p-0 list-none overflow-hidden">
             {DEMO_STEPS.map((step, idx) => {
               const checked = done.includes(step.id)
               return (
                 <li key={step.id} className="flex items-center gap-3 px-4 py-3 text-sm">
                   {checked ? (
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-ok" aria-label="Concluído" />
+                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-400" aria-label="Concluído" />
                   ) : (
-                    <Circle className="h-4 w-4 shrink-0 text-cream-muted" aria-label="Pendente" />
+                    <Circle className="h-4 w-4 shrink-0 text-slate-500" aria-label="Pendente" />
                   )}
-                  <span className={checked ? 'text-cream font-semibold' : 'text-cream-muted'}>
+                  <span className={checked ? 'text-slate-100 font-medium' : 'text-slate-400'}>
                     {idx + 1}. {step.label}
                   </span>
                 </li>
@@ -99,13 +107,13 @@ export function TopBar() {
             })}
           </ol>
 
-          <div className="rounded-panel border border-track bg-navy-raised p-4">
-            <h3 className="text-base">Testar renovação automática da sessão (single-flight)</h3>
-            <p className="prose-copilot mt-1 text-sm text-cream-muted">
+          <div className="rounded-xl border border-slate-800 bg-slate-900/70 p-4">
+            <h3 className="text-sm font-semibold text-white">Testar renovação automática da sessão (single-flight)</h3>
+            <p className="prose-copilot mt-1.5 text-xs text-slate-400">
               O access token mora apenas em memória. Você pode descartá-lo agora para ver a próxima chamada renovar a
               sessão via <code>POST /api/v1/auth/refresh</code> automaticamente.
             </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
+            <div className="mt-3.5 flex flex-wrap items-center gap-2">
               <Button
                 variant="secondary"
                 size="sm"

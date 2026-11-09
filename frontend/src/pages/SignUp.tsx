@@ -143,8 +143,11 @@ export function SignUp() {
         {/* Coluna Esquerda: Educacional e Diagrama */}
         <section className="flex flex-col space-y-8">
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white tracking-tight">
-              Copilot de <span className="text-cyan-400">Previdência</span>
+            <h1 className="flex items-center gap-3.5 text-4xl md:text-5xl font-bold text-white tracking-tight">
+              <img src="/favicon.svg" alt="" aria-hidden="true" className="h-11 w-11 md:h-12 md:w-12 rounded-xl" />
+              <span>
+                Java<span className="text-cyan-400">Prev</span>
+              </span>
             </h1>
             <p className="text-lg text-slate-400 leading-relaxed max-w-lg">
               Um cliente para testar o RAG de previdência privada e enxergar como o Spring Boot valida, criptografa e

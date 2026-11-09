@@ -50,7 +50,6 @@ export function Workspace() {
   const documentsQuery = useQuery({
     queryKey: ['documents'],
     queryFn: listDocuments,
-    // Polling a cada 2 segundos enquanto houver documento em PENDING ou PROCESSING (seção 8.2).
     refetchInterval: (query) => {
       const list = query.state.data ?? []
       return list.some((d) => d.status === 'PENDING' || d.status === 'PROCESSING') ? 2000 : false
@@ -178,7 +177,7 @@ export function Workspace() {
   return (
     <div className="flex flex-1 flex-col">
       {/* Seletor de abas no mobile */}
-      <div className="border-b border-track bg-navy px-4 py-2 lg:hidden">
+      <div className="border-b border-slate-800/80 bg-slate-900/70 px-4 py-2 lg:hidden">
         <Tabs
           ariaLabel="Colunas do Workspace"
           items={MOBILE_TABS}
@@ -191,13 +190,15 @@ export function Workspace() {
         {/* Coluna 1: Documentos */}
         <section
           aria-label="Documentos"
-          className={`flex flex-col gap-4 border-r border-track bg-navy p-4 lg:col-span-3 ${
+          className={`flex flex-col gap-4 border-r border-slate-800/80 bg-slate-900/40 p-4 lg:col-span-3 ${
             mobilePane === 'documentos' ? 'flex' : 'hidden lg:flex'
           }`}
         >
           <div className="flex items-center justify-between gap-2">
-            <h2 className="text-lg">Documentos</h2>
-            <span className="text-xs text-cream-muted">{documents.length} no total</span>
+            <h2 className="text-sm font-semibold text-white">Documentos</h2>
+            <span className="rounded-full bg-slate-800/80 px-2.5 py-0.5 text-[11px] font-medium text-slate-400">
+              {documents.length} no total
+            </span>
           </div>
 
           <UploadZone onUpload={handleUpload} />
@@ -215,20 +216,20 @@ export function Workspace() {
         {/* Coluna 2: Conversa */}
         <section
           aria-label="Conversa"
-          className={`flex flex-col bg-abyss ${
-            xrayCollapsed ? 'lg:col-span-8' : 'lg:col-span-5'
+          className={`flex flex-col bg-slate-950 ${
+            xrayCollapsed ? 'lg:col-span-9' : 'lg:col-span-5'
           } ${mobilePane === 'conversa' ? 'flex' : 'hidden lg:flex'}`}
         >
-          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-track bg-navy px-4 py-3">
-            <div className="min-w-0">
-              <h2 className="truncate text-lg">
+          <div className="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800/80 bg-slate-900/50 px-4 py-3">
+            <div className="min-w-0 flex-1">
+              <h2 className="truncate text-sm font-semibold text-white">
                 {selectedDocument
                   ? `Conversa sobre: ${selectedDocument.fileName}`
                   : 'Conversa sobre o documento'}
               </h2>
             </div>
 
-            <div className="hidden lg:block">
+            <div className="hidden lg:block shrink-0">
               <Button
                 variant="ghost"
                 size="sm"
@@ -237,12 +238,12 @@ export function Workspace() {
               >
                 {xrayCollapsed ? (
                   <>
-                    <PanelRightOpen className="h-4 w-4" />
+                    <PanelRightOpen className="h-3.5 w-3.5" />
                     <span>Mostrar Raio-X</span>
                   </>
                 ) : (
                   <>
-                    <PanelRightClose className="h-4 w-4" />
+                    <PanelRightClose className="h-3.5 w-3.5" />
                     <span>Recolher Raio-X</span>
                   </>
                 )}
@@ -271,40 +272,40 @@ export function Workspace() {
         {!xrayCollapsed && (
           <aside
             aria-label="Raio-X da última requisição"
-            className={`flex flex-col gap-3 border-l border-track bg-navy p-4 lg:col-span-4 ${
+            className={`flex flex-col gap-3.5 border-l border-slate-800/80 bg-slate-900/40 p-4 lg:col-span-4 ${
               mobilePane === 'raiox' ? 'flex' : 'hidden lg:flex'
             }`}
           >
             <div className="flex items-center justify-between gap-2">
-              <h2 className="text-lg">Raio-X</h2>
+              <h2 className="text-sm font-semibold text-white">Raio-X</h2>
               <Button variant="secondary" size="sm" onClick={() => handleOpenXRay(lastRecord?.id)}>
-                <Compass className="h-4 w-4" />
+                <Compass className="h-3.5 w-3.5 text-cyan-400" />
                 <span>Abrir no Raio-X</span>
               </Button>
             </div>
 
             {lastRecord ? (
               <div className="flex flex-col gap-3">
-                <div className="flex flex-wrap items-center justify-between gap-2 rounded-panel border border-track bg-abyss p-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 rounded-xl border border-slate-800 bg-slate-950/70 p-3">
                   <div className="min-w-0">
-                    <span className="block truncate text-sm font-extrabold text-cream">
+                    <span className="block truncate font-mono text-xs font-semibold text-slate-100">
                       {lastRecord.method} {lastRecord.path}
                     </span>
                     {countLabel(lastRecord) && (
-                      <span className="text-xs text-cream-muted">{countLabel(lastRecord)}</span>
+                      <span className="text-[11px] text-slate-400">{countLabel(lastRecord)}</span>
                     )}
                   </div>
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 shrink-0">
                     <StatusBadge
                       label={lastRecord.status === 0 ? 'REDE' : String(lastRecord.status)}
                       tone={toneForHttpStatus(lastRecord.status)}
                     />
-                    <span className="text-xs font-semibold text-cream-muted">{lastRecord.durationMs} ms</span>
+                    <span className="text-xs font-medium text-slate-400">{lastRecord.durationMs} ms</span>
                   </div>
                 </div>
 
                 {lastRecord.warning && (
-                  <p className="rounded-control border border-sand/40 bg-navy-raised px-3 py-2 text-xs text-sand">
+                  <p className="rounded-lg border border-amber-400/30 bg-amber-400/10 px-3 py-2 text-xs text-amber-300">
                     {lastRecord.warning}
                   </p>
                 )}
@@ -312,7 +313,7 @@ export function Workspace() {
                 <MetroMap flow={lastFlow} variant={lastVariant} compact showControls={false} />
               </div>
             ) : (
-              <div className="rounded-panel border border-track bg-abyss/50 p-4 text-sm text-cream-muted">
+              <div className="rounded-xl border border-slate-800/80 bg-slate-950/50 p-4 text-xs text-slate-400 leading-relaxed">
                 Nenhuma requisição registrada ainda. Assim que você enviar um PDF ou fizer uma pergunta, o caminho
                 aparece aqui.
               </div>

@@ -59,10 +59,10 @@ export function Inside() {
 
   return (
     <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col gap-6 p-4 md:p-6">
-      <header className="flex flex-wrap items-center justify-between gap-3">
+      <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-slate-800/90 bg-slate-900/60 p-5">
         <div>
-          <h1 className="text-2xl">Por dentro da infraestrutura</h1>
-          <p className="prose-copilot mt-1 text-sm text-cream-muted">
+          <h1 className="text-xl font-semibold text-white">Por dentro da infraestrutura</h1>
+          <p className="prose-copilot mt-1 text-sm text-slate-400">
             Como a fila RabbitMQ, o bucket S3, o índice HNSW no PostgreSQL e os templates de prompt conversam com a API
             Spring Boot.
           </p>
